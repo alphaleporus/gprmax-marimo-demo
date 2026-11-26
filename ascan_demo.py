@@ -64,14 +64,19 @@ async def _(Path, mo, sys):
     in_browser = sys.platform == "emscripten"
 
     async def read_bytes(relative):
-        if in_browser:
-            from pyodide.http import pyfetch
+        # Local runs and molab have the repo files on disk; a static WASM
+        # export serves them over HTTP next to index.html.
+        for candidate in (Path(str(public / relative)), Path("public") / relative):
+            if candidate.is_file():
+                return candidate.read_bytes()
+        if not in_browser:
+            raise FileNotFoundError(str(public / relative))
+        from pyodide.http import pyfetch
 
-            response = await pyfetch(str(public / relative))
-            if not response.ok:
-                raise FileNotFoundError(f"{relative}: HTTP {response.status}")
-            return await response.bytes()
-        return (public / relative).read_bytes()
+        response = await pyfetch(str(public / relative))
+        if not response.ok:
+            raise FileNotFoundError(f"{relative}: HTTP {response.status}")
+        return await response.bytes()
 
     workdir = Path("/tmp/gprmax_ascan_demo")
     for target, source in MODULES.items():
