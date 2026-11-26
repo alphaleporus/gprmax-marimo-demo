@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" href="./assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" href="./assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="./assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="0.26.0" hidden></marimo-version>
+    <marimo-user-config data-config="{&quot;display&quot;: {&quot;theme&quot;: &quot;light&quot;, &quot;code_editor_font_size&quot;: 14, &quot;cell_output&quot;: &quot;below&quot;, &quot;default_width&quot;: &quot;medium&quot;, &quot;dataframes&quot;: &quot;rich&quot;, &quot;default_table_page_size&quot;: 10, &quot;default_table_max_columns&quot;: 50, &quot;reference_highlighting&quot;: true, &quot;code_lens&quot;: true}, &quot;formatting&quot;: {&quot;line_length&quot;: 79, &quot;infer_types&quot;: &quot;off&quot;}, &quot;keymap&quot;: {&quot;preset&quot;: &quot;default&quot;, &quot;overrides&quot;: {}}, &quot;runtime&quot;: {&quot;auto_instantiate&quot;: false, &quot;auto_reload&quot;: &quot;off&quot;, &quot;reactive_tests&quot;: true, &quot;on_cell_change&quot;: &quot;autorun&quot;, &quot;watcher_on_save&quot;: &quot;lazy&quot;, &quot;output_max_bytes&quot;: 8000000, &quot;serve_cached_sessions_in_apps&quot;: false, &quot;std_stream_max_bytes&quot;: 1000000, &quot;pythonpath&quot;: [], &quot;default_sql_output&quot;: &quot;auto&quot;, &quot;default_auto_download&quot;: [], &quot;default_csv_encoding&quot;: &quot;utf-8&quot;, &quot;show_tracebacks&quot;: false, &quot;cache_cells&quot;: false, &quot;pin_modules&quot;: true}, &quot;save&quot;: {&quot;autosave&quot;: &quot;off&quot;, &quot;autosave_delay&quot;: 1000, &quot;format_on_save&quot;: false}, &quot;server&quot;: {&quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: null, &quot;proxy&quot;: null, &quot;base_url&quot;: &quot;&quot;, &quot;allow_origins&quot;: [], &quot;headless&quot;: false, &quot;watch&quot;: false, &quot;skew_protection&quot;: true, &quot;timeout&quot;: null, &quot;token_password&quot;: null, &quot;token_password_file&quot;: null, &quot;include_code&quot;: false, &quot;redirect_console_to_browser&quot;: false, &quot;skip_update_check&quot;: false, &quot;session_cookie_secure&quot;: false, &quot;session_cookie_partitioned&quot;: false, &quot;session_secret&quot;: null, &quot;browser&quot;: &quot;default&quot;, &quot;follow_symlink&quot;: false, &quot;disable_file_downloads&quot;: false}, &quot;package_management&quot;: {&quot;manager&quot;: &quot;pip&quot;}, &quot;language_servers&quot;: {&quot;pylsp&quot;: {&quot;enabled&quot;: false, &quot;enable_mypy&quot;: true, &quot;enable_ruff&quot;: true, &quot;enable_flake8&quot;: false, &quot;enable_pydocstyle&quot;: false, &quot;enable_pylint&quot;: false, &quot;enable_pyflakes&quot;: false}}, &quot;diagnostics&quot;: {&quot;sql_linter&quot;: true}, &quot;lint&quot;: {&quot;select&quot;: [], &quot;ignore&quot;: []}, &quot;experimental&quot;: {&quot;isolate_apps&quot;: false, &quot;debugger&quot;: false, &quot;line_timing&quot;: false, &quot;execution_type&quot;: &quot;relaxed&quot;}, &quot;snippets&quot;: {&quot;custom_paths&quot;: [], &quot;include_default_snippets&quot;: true}, &quot;datasources&quot;: {}, &quot;file_browser&quot;: null, &quot;sharing&quot;: null, &quot;venv&quot;: {&quot;path&quot;: null, &quot;writable&quot;: false}, &quot;cache&quot;: {&quot;verification&quot;: &quot;off&quot;, &quot;store&quot;: null, &quot;loader&quot;: &quot;lazy&quot;}, &quot;signing&quot;: {&quot;trusted_signers&quot;: {}, &quot;private_key_path&quot;: null}}" hidden></marimo-user-config>
+    <marimo-server-token data-token="unused" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>gprMax A-scan explorer</title>
+    <script type="module" crossorigin src="./assets/index-Bz0PTGK3.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/rolldown-runtime-BWaJ3C7D.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-CaKr0epQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-dom-D1vpmnA3.js">
+    <link rel="modulepreload" crossorigin href="./assets/compiler-runtime-9wvElW8N.js">
+    <link rel="modulepreload" crossorigin href="./assets/isArrayLikeObject-DH7ctiDt.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseSet-DAbS0RDv.js">
+    <link rel="modulepreload" crossorigin href="./assets/objects-rLPlQ3X_.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEventListener-C20Iz_A4.js">
+    <link rel="modulepreload" crossorigin href="./assets/jsx-runtime-lTuChwRC.js">
+    <link rel="modulepreload" crossorigin href="./assets/fullscreen-BFh3RA8N.js">
+    <link rel="modulepreload" crossorigin href="./assets/now-CtjbmM3c.js">
+    <link rel="modulepreload" crossorigin href="./assets/debounce-BepPU2MG.js">
+    <link rel="modulepreload" crossorigin href="./assets/session-BqIuHOII.js">
+    <link rel="modulepreload" crossorigin href="./assets/Deferred-CrTnjj37.js">
+    <link rel="modulepreload" crossorigin href="./assets/config-8BMsATQ3.js">
+    <link rel="modulepreload" crossorigin href="./assets/use-toast-B1oMBlNq.js">
+    <link rel="modulepreload" crossorigin href="./assets/clsx-DB0hHKMi.js">
+    <link rel="modulepreload" crossorigin href="./assets/cn-BKfX5HOQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-Bj41tEAo.js">
+    <link rel="modulepreload" crossorigin href="./assets/menu-items-WftlCX9O.js">
+    <link rel="modulepreload" crossorigin href="./assets/use-restore-focus-Bw4Kf_7p.js">
+    <link rel="modulepreload" crossorigin href="./assets/createLucideIcon-DrOsZ82w.js">
+    <link rel="modulepreload" crossorigin href="./assets/circle-DxuLh0go.js">
+    <link rel="modulepreload" crossorigin href="./assets/button-9vH6TxbD.js">
+    <link rel="modulepreload" crossorigin href="./assets/check-IdgX_tPS.js">
+    <link rel="modulepreload" crossorigin href="./assets/I18nProvider-VRzthBPr.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNumberFormatter-DR41YWqt.js">
+    <link rel="modulepreload" crossorigin href="./assets/select-De22ygvN.js">
+    <link rel="modulepreload" crossorigin href="./assets/toast-BKd-k1EC.js">
+    <link rel="modulepreload" crossorigin href="./assets/tooltip-HEXc6Dw2.js">
+    <link rel="modulepreload" crossorigin href="./assets/paths-Dy0H32lC.js">
+    <link rel="modulepreload" crossorigin href="./assets/useLifecycle-BY8rdx0o.js">
+    <link rel="modulepreload" crossorigin href="./assets/toDate-BBTzZCr5.js">
+    <link rel="modulepreload" crossorigin href="./assets/database-zap-Doxb5Eic.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-dialog-CAqi94sn.js">
+    <link rel="modulepreload" crossorigin href="./assets/arrays-4uUR2vlM.js">
+    <link rel="modulepreload" crossorigin href="./assets/once-BBpw5_AD.js">
+    <link rel="modulepreload" crossorigin href="./assets/numbers-Bd_MVRmP.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEvent-9NY2PKGK.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDebounce-Cy1nZyqW.js">
+    <link rel="modulepreload" crossorigin href="./assets/input-8a8wH4d9.js">
+    <link rel="modulepreload" crossorigin href="./assets/requests-B0mIrY5g.js">
+    <link rel="modulepreload" crossorigin href="./assets/uuid-k9DpjH68.js">
+    <link rel="modulepreload" crossorigin href="./assets/write-secret-modal-E5FF4ZYz.js">
+    <link rel="modulepreload" crossorigin href="./assets/plus-aeAS4GoK.js">
+    <link rel="modulepreload" crossorigin href="./assets/trash-2-D7BpN5uv.js">
+    <link rel="modulepreload" crossorigin href="./assets/preload-helper-CRzLMJPS.js">
+    <link rel="modulepreload" crossorigin href="./assets/purify.es-BXhPiKO5.js">
+    <link rel="modulepreload" crossorigin href="./assets/connection-B9M8IBL7.js">
+    <link rel="modulepreload" crossorigin href="./assets/errors-CgJw--tR.js">
+    <link rel="modulepreload" crossorigin href="./assets/cjs-B2XXOp2p.js">
+    <link rel="modulepreload" crossorigin href="./assets/createReducer-CPRNMZbX.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-9uo8aAYM.js">
+    <link rel="modulepreload" crossorigin href="./assets/assertNever-BspUgErw.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BRDTfwM_.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-C8YdlBpC.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-OYFcNAop.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-Bje8Vi4y.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BCSYBEKQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CFglPSNQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-EFOfG5j6.js">
+    <link rel="modulepreload" crossorigin href="./assets/stex-DunGacnT.js">
+    <link rel="modulepreload" crossorigin href="./assets/capabilities-ML2ieXdx.js">
+    <link rel="modulepreload" crossorigin href="./assets/marked.esm-BPviFSZ1.js">
+    <link rel="modulepreload" crossorigin href="./assets/lru-BNKejxTA.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-5WwcIZ_2.js">
+    <link rel="modulepreload" crossorigin href="./assets/badge-DmF4MVYo.js">
+    <link rel="modulepreload" crossorigin href="./assets/useAsyncData-DBOHsKov.js">
+    <link rel="modulepreload" crossorigin href="./assets/cells-ctKB1VsK.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseFlatten-Fcj9_CzB.js">
+    <link rel="modulepreload" crossorigin href="./assets/_flatRest-BUIHfcAF.js">
+    <link rel="modulepreload" crossorigin href="./assets/hasIn-BaGBDzqj.js">
+    <link rel="modulepreload" crossorigin href="./assets/config-CswxPZ-H.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-DNZJCFCv.js">
+    <link rel="modulepreload" crossorigin href="./assets/reload-safe-BrMEn0Sy.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-DoSmp4Cr.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-DOSmiv_1.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-icon-2gZyR-6V.js">
+    <link rel="modulepreload" crossorigin href="./assets/ErrorBoundary-CZ6dbcr6.js">
+    <link rel="modulepreload" crossorigin href="./assets/chevron-right-DhBKN7P7.js">
+    <link rel="modulepreload" crossorigin href="./assets/dropdown-menu-Daw1s8v2.js">
+    <link rel="modulepreload" crossorigin href="./assets/html-to-image-DE731toM.js">
+    <link rel="modulepreload" crossorigin href="./assets/download-VhWHgc65.js">
+    <link rel="modulepreload" crossorigin href="./assets/switch-BdikBGMr.js">
+    <link rel="modulepreload" crossorigin href="./assets/tabs-CQHYYAuY.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-C3OYYCDi.js">
+    <link rel="modulepreload" crossorigin href="./assets/chevron-left-Bt4RwxPa.js">
+    <link rel="modulepreload" crossorigin href="./assets/eye-off-McXkW3zb.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-cw-BihnsYRY.js">
+    <link rel="modulepreload" crossorigin href="./assets/tree-actions-C1niuGCI.js">
+    <link rel="modulepreload" crossorigin href="./assets/ellipsis-HzuwI-0E.js">
+    <link rel="modulepreload" crossorigin href="./assets/external-link-BiPpzChy.js">
+    <link rel="modulepreload" crossorigin href="./assets/package-Bh6oTnly.js">
+    <link rel="modulepreload" crossorigin href="./assets/terminal-Bk8l_Y5Q.js">
+    <link rel="modulepreload" crossorigin href="./assets/multi-map-Dyt-qqHB.js">
+    <link rel="modulepreload" crossorigin href="./assets/datasource-BogZ-WNy.js">
+    <link rel="modulepreload" crossorigin href="./assets/useRunCells-CgzcIASr.js">
+    <link rel="modulepreload" crossorigin href="./assets/RenderHTML-CaBHAguM.js">
+    <link rel="modulepreload" crossorigin href="./assets/kbd-BY6yDCM9.js">
+    <link rel="modulepreload" crossorigin href="./assets/error-entries-CPxBSEgV.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-D4hrJkEE.js">
+    <link rel="modulepreload" crossorigin href="./assets/useInstallPackage-DfOFvxcJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-P-9rcRyb.js">
+    <link rel="modulepreload" crossorigin href="./assets/MarimoErrorOutput-DjItE1Hw.js">
+    <link rel="modulepreload" crossorigin href="./assets/spinner-mSpDhQjr.js">
+    <link rel="modulepreload" crossorigin href="./assets/en-US-DaWkDyqR.js">
+    <link rel="modulepreload" crossorigin href="./assets/isValid-BJuAEzD-.js">
+    <link rel="modulepreload" crossorigin href="./assets/dates-C4Dsal0e.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDateFormatter-tmCCedT6.js">
+    <link rel="modulepreload" crossorigin href="./assets/micromark-factory-space-DpF9uukC.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-7TTQLYRW-CMusWEwW.js">
+    <link rel="modulepreload" crossorigin href="./assets/LazyAnyLanguageCodeMirror-BILojvhx.js">
+    <link rel="modulepreload" crossorigin href="./assets/markdown-renderer-DzgJacpY.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-CNPGWpMu.js">
+    <link rel="modulepreload" crossorigin href="./assets/precisionRound-Bq_nmf5u.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-D5bOh7g6.js">
+    <link rel="modulepreload" crossorigin href="./assets/vega-loader.browser-rkCEl7-e.js">
+    <link rel="modulepreload" crossorigin href="./assets/tooltip-Dvfb7jX_.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-icons.esm-Bk00LeT5.js">
+    <link rel="modulepreload" crossorigin href="./assets/extends-CvVTau-c.js">
+    <link rel="modulepreload" crossorigin href="./assets/objectWithoutPropertiesLoose-Do6ywDBO.js">
+    <link rel="modulepreload" crossorigin href="./assets/useIframeCapabilities-DDE5DsH_.js">
+    <link rel="modulepreload" crossorigin href="./assets/error-banner-BANU8Ey6.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-DfElfBpz.js">
+    <link rel="modulepreload" crossorigin href="./assets/formats-B7r5icML.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-BlqJUGTJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-resizable-panels.browser.esm-CBPhkuD1.js">
+    <link rel="modulepreload" crossorigin href="./assets/useStateForKey-C9MNFTF1.js">
+    <link rel="modulepreload" crossorigin href="./assets/JsonOutput-BkvT8nb6.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-headphone-Dw3n4EW9.js">
+    <link rel="modulepreload" crossorigin href="./assets/semaphore-DDThflM1.js">
+    <link rel="stylesheet" crossorigin href="./assets/cells-0PFKL3SH.css">
+    <link rel="stylesheet" crossorigin href="./assets/markdown-renderer-DjIHoF9Z.css">
+    <link rel="stylesheet" crossorigin href="./assets/JsonOutput-wjAPD6xX.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-CPEJVejy.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <script>
+        if (window.location.protocol === 'file:') {
+            alert('Warning: This file must be served by an HTTP server to function correctly.');
+        }
+    </script>
+    
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_EXPORT_CONTEXT__", {
+        value: Object.freeze({
+            trusted: true,
+            notebookCode: "# /// script\n# requires-python = \"\u003E=3.12\"\n# dependencies = [\"h5py==3.16.0\", \"marimo\u003E=0.23.8\", \"numpy==2.5.3\", \"plotly==7.2.0\"]\n# \n# [tool.marimo.export]\n# lock_kind = \"observed\"\n# ///\n\nimport marimo\n\n__generated_with = \"0.26.0\"\napp = marimo.App(width=\"medium\", app_title=\"gprMax A-scan explorer\")\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(\"\"\"\n    # gprMax A-scan explorer\n\n    Two gprMax runs of the same 2D scene: a metal cylinder buried in a\n    dielectric half-space, and the same half-space with no cylinder in it.\n    Pick field components, overlay the runs, subtract the background,\n    apply gain, or switch to the spectrum.\n\n    Everything runs in your browser. The output files were produced by\n    gprMax 4.0.2 and are read with the same `h5_reader` and `processing`\n    modules that ship in `gprMax[marimo]`.\n    \"\"\")\n\n\n@app.cell\ndef _():\n    import sys\n    from pathlib import Path\n\n    import h5py  # noqa: F401  # used by h5_reader; imported here so WASM installs it\n    import marimo as mo\n    import numpy as np\n    import plotly.graph_objects as go\n    from plotly.subplots import make_subplots\n\n    return Path, go, make_subplots, mo, np, sys\n\n\n@app.cell\nasync def _(Path, mo, sys):\n    # gprMax itself needs compiled extensions, so in the browser the pure\n    # Python toolbox modules are fetched from public/ and laid out under the\n    # same package paths they use in a real install.\n    MODULES = {\n        \"gprMax/toolboxes/Marimo/h5_reader.py\": \"h5_reader.py\",\n        \"gprMax/toolboxes/Marimo/processing.py\": \"processing.py\",\n        \"gprMax/toolboxes/Utilities/receiver_identity.py\": \"receiver_identity.py\",\n        \"gprMax/toolboxes/Utilities/trace_time.py\": \"trace_time.py\",\n        \"gprMax/utilities/utilities.py\": \"utilities.py\",\n    }\n    DATA_FILES = [\"cylinder_Ascan_2D.h5\", \"cylinder_Ascan_2D_background.h5\"]\n\n    public = mo.notebook_location() / \"public\"\n    in_browser = sys.platform == \"emscripten\"\n\n    async def read_bytes(relative):\n        if in_browser:\n            from pyodide.http import pyfetch\n\n            response = await pyfetch(str(public / relative))\n            if not response.ok:\n                raise FileNotFoundError(f\"{relative}: HTTP {response.status}\")\n            return await response.bytes()\n        return (public / relative).read_bytes()\n\n    workdir = Path(\"/tmp/gprmax_ascan_demo\")\n    for target, source in MODULES.items():\n        dest = workdir / target\n        dest.parent.mkdir(parents=True, exist_ok=True)\n        dest.write_bytes(await read_bytes(f\"gprmax_src/{source}\"))\n    for package in [\"gprMax\", \"gprMax/toolboxes\", \"gprMax/toolboxes/Marimo\",\n                    \"gprMax/toolboxes/Utilities\", \"gprMax/utilities\"]:\n        (workdir / package / \"__init__.py\").touch()\n\n    data_paths = []\n    for name in DATA_FILES:\n        dest = workdir / \"data\" / name\n        dest.parent.mkdir(parents=True, exist_ok=True)\n        dest.write_bytes(await read_bytes(name))\n        data_paths.append(dest)\n\n    if str(workdir) not in sys.path:\n        sys.path.insert(0, str(workdir))\n    return (data_paths,)\n\n\n@app.cell\ndef _(data_paths):\n    from gprMax.toolboxes.Marimo import h5_reader, processing\n\n    files = h5_reader.load_files(data_paths)\n    target_key, background_key = (p.name for p in data_paths)\n    return background_key, files, h5_reader, processing, target_key\n\n\n@app.cell\ndef _(files, h5_reader, mo, np, target_key):\n    target_file = files[target_key]\n    components = h5_reader.list_components(target_file, \"rx1\")\n\n    def _label(comp):\n        trace = h5_reader.get_trace(target_file, comp, \"rx1\")\n        return f\"{comp} (all zeros in this 2D model)\" if not np.any(trace) else comp\n\n    default_components = [c for c in (\"Ez\", \"Hx\") if c in components] or components[:1]\n\n    component_picker = mo.ui.multiselect(\n        options={_label(c): c for c in components},\n        value=[_label(c) for c in default_components],\n        label=\"Field components\",\n    )\n    run_picker = mo.ui.multiselect(\n        options=[\"Target\", \"Background\", \"Target minus background\"],\n        value=[\"Target\", \"Background\"],\n        label=\"Runs\",\n    )\n    view_picker = mo.ui.radio(\n        options=[\"Time domain\", \"Spectrum\"], value=\"Time domain\", inline=True\n    )\n    return component_picker, run_picker, target_file, view_picker\n\n\n@app.cell\ndef _(mo, processing):\n    gain_kind = mo.ui.dropdown(\n        options={info[\"label\"]: kind for kind, info in processing.GAIN_KINDS.items()},\n        value=processing.GAIN_KINDS[\"none\"][\"label\"],\n        label=\"Gain\",\n    )\n    gain_factor = mo.ui.slider(0.0, 5.0, step=0.1, value=1.0, label=\"Factor\", debounce=True)\n    gain_power = mo.ui.slider(0.0, 3.0, step=0.1, value=1.0, label=\"Power\", debounce=True)\n    gain_start = mo.ui.slider(0.0, 3.0, step=0.05, value=1.4, label=\"Start (ns)\", debounce=True)\n    return gain_factor, gain_kind, gain_power, gain_start\n\n\n@app.cell\ndef _(\n    component_picker,\n    gain_factor,\n    gain_kind,\n    gain_power,\n    gain_start,\n    mo,\n    run_picker,\n    view_picker,\n):\n    controls = mo.vstack(\n        [\n            mo.hstack([component_picker, run_picker], justify=\"start\", gap=2),\n            mo.hstack([gain_kind, gain_factor, gain_power, gain_start], justify=\"start\", gap=2),\n            view_picker,\n        ]\n    )\n    return (controls,)\n\n\n@app.cell\ndef _(\n    background_key,\n    component_picker,\n    files,\n    gain_factor,\n    gain_kind,\n    gain_power,\n    gain_start,\n    go,\n    h5_reader,\n    make_subplots,\n    mo,\n    processing,\n    run_picker,\n    target_key,\n    view_picker,\n):\n    selected_components = component_picker.value\n    selected_runs = run_picker.value\n    spectrum = view_picker.value == \"Spectrum\"\n\n    def _build():\n        target = files[target_key]\n        background = files[background_key]\n        colours = {\n            \"Target\": \"#1656b8\",\n            \"Background\": \"#c42b91\",\n            \"Target minus background\": \"#28367f\",\n        }\n        notes = []\n\n        fig = make_subplots(\n            rows=len(selected_components),\n            cols=1,\n            shared_xaxes=True,\n            vertical_spacing=0.08,\n            subplot_titles=selected_components,\n        )\n\n        for row, comp in enumerate(selected_components, start=1):\n            time_ns = h5_reader.get_time_axis(target, \"ns\", \"rx1\", comp)\n            dt = target[\"receivers\"][\"rx1\"][\"component_meta\"][comp][\"sample_interval\"]\n            t_trace = h5_reader.get_trace(target, comp, \"rx1\")\n            b_trace = h5_reader.get_trace(background, comp, \"rx1\")\n            series = {\"Target\": t_trace, \"Background\": b_trace}\n            if \"Target minus background\" in selected_runs:\n                series[\"Target minus background\"] = processing.subtract_traces(\n                    t_trace,\n                    b_trace,\n                    dt_target=dt,\n                    dt_reference=background[\"receivers\"][\"rx1\"][\"component_meta\"][comp][\n                        \"sample_interval\"\n                    ],\n                )\n\n            x_limit = None\n            for run in selected_runs:\n                trace, _curve = processing.apply_gain(\n                    series[run],\n                    time_ns,\n                    gain_kind.value,\n                    factor=gain_factor.value,\n                    power=gain_power.value,\n                    start_ns=gain_start.value,\n                )\n                if spectrum:\n                    freqs, power_db, peak_db = processing.fft_spectrum(trace, dt)\n                    if peak_db is None:\n                        notes.append(f\"{comp} {run.lower()} is all zeros, so it has no spectrum.\")\n                        continue\n                    x = freqs / 1e9\n                    y = power_db + peak_db\n                    limit = processing.spectrum_view_limit(freqs, power_db) / 1e9\n                    x_limit = max(x_limit or 0.0, limit)\n                else:\n                    x, y = time_ns, trace\n\n                fig.add_trace(\n                    go.Scatter(\n                        x=x,\n                        y=y,\n                        mode=\"lines\",\n                        name=run,\n                        legendgroup=run,\n                        showlegend=row == 1,\n                        line={\"color\": colours[run], \"width\": 1.6},\n                    ),\n                    row=row,\n                    col=1,\n                )\n\n            unit = \"Power (dB)\" if spectrum else h5_reader.get_unit_label(comp)\n            fig.update_yaxes(title_text=unit, row=row, col=1)\n            if spectrum and x_limit:\n                fig.update_xaxes(range=[0, x_limit], row=row, col=1)\n\n        fig.update_xaxes(\n            title_text=\"Frequency (GHz)\" if spectrum else \"Time (ns)\",\n            row=len(selected_components),\n            col=1,\n        )\n        fig.update_layout(\n            height=260 * len(selected_components) + 80,\n            margin={\"l\": 60, \"r\": 20, \"t\": 40, \"b\": 50},\n            template=\"plotly_white\",\n            legend={\"orientation\": \"h\", \"y\": -0.15 if len(selected_components) == 1 else -0.06},\n            title=processing.gain_label(\n                gain_kind.value,\n                gain_factor.value,\n                gain_power.value,\n                gain_start.value,\n            ),\n        )\n        return fig, notes\n\n    if selected_components and selected_runs:\n        fig, notes = _build()\n    else:\n        fig = mo.callout(mo.md(\"Pick at least one component and one run.\"), kind=\"info\")\n        notes = []\n    note_md = mo.md(\"  \\n\".join(notes)) if notes else mo.md(\"\")\n    return fig, note_md\n\n\n@app.cell\ndef _(controls, fig, mo, note_md):\n    mo.vstack([controls, fig, note_md])\n\n\n@app.cell(hide_code=True)\ndef _(h5_reader, mo, target_file):\n    mo.accordion({\"File metadata\": mo.md(h5_reader.format_metadata_text(target_file))})\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(\"\"\"\n    **Things to try.** Ex, Ey and Hz are flat because a 2D TMz model never\n    updates them. Select *Target minus background* to strip the direct\n    wave and keep only the cylinder's reflection. Switch to *Spectrum* to\n    see where a 1.5 GHz Ricker source puts its energy.\n\n    Source: [gprMax](https://github.com/gprMax/gprMax), toolbox in\n    `gprMax/toolboxes/Marimo/`. Install locally with\n    `pip install \"gprMax[marimo]\"`.\n    \"\"\")\n\n\nif __name__ == \"__main__\":\n    app.run()\n",
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+<marimo-code hidden="">%23%20%2F%2F%2F%20script%0A%23%20requires-python%20%3D%20%22%3E%3D3.12%22%0A%23%20dependencies%20%3D%20%5B%22h5py%3D%3D3.16.0%22%2C%20%22marimo%3E%3D0.23.8%22%2C%20%22numpy%3D%3D2.5.3%22%2C%20%22plotly%3D%3D7.2.0%22%5D%0A%23%20%0A%23%20%5Btool.marimo.export%5D%0A%23%20lock_kind%20%3D%20%22observed%22%0A%23%20%2F%2F%2F%0A%0Aimport%20marimo%0A%0A__generated_with%20%3D%20%220.26.0%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22%2C%20app_title%3D%22gprMax%20A-scan%20explorer%22)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(%22%22%22%0A%20%20%20%20%23%20gprMax%20A-scan%20explorer%0A%0A%20%20%20%20Two%20gprMax%20runs%20of%20the%20same%202D%20scene%3A%20a%20metal%20cylinder%20buried%20in%20a%0A%20%20%20%20dielectric%20half-space%2C%20and%20the%20same%20half-space%20with%20no%20cylinder%20in%20it.%0A%20%20%20%20Pick%20field%20components%2C%20overlay%20the%20runs%2C%20subtract%20the%20background%2C%0A%20%20%20%20apply%20gain%2C%20or%20switch%20to%20the%20spectrum.%0A%0A%20%20%20%20Everything%20runs%20in%20your%20browser.%20The%20output%20files%20were%20produced%20by%0A%20%20%20%20gprMax%204.0.2%20and%20are%20read%20with%20the%20same%20%60h5_reader%60%20and%20%60processing%60%0A%20%20%20%20modules%20that%20ship%20in%20%60gprMax%5Bmarimo%5D%60.%0A%20%20%20%20%22%22%22)%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20sys%0A%20%20%20%20from%20pathlib%20import%20Path%0A%0A%20%20%20%20import%20h5py%20%20%23%20noqa%3A%20F401%20%20%23%20used%20by%20h5_reader%3B%20imported%20here%20so%20WASM%20installs%20it%0A%20%20%20%20import%20marimo%20as%20mo%0A%20%20%20%20import%20numpy%20as%20np%0A%20%20%20%20import%20plotly.graph_objects%20as%20go%0A%20%20%20%20from%20plotly.subplots%20import%20make_subplots%0A%0A%20%20%20%20return%20Path%2C%20go%2C%20make_subplots%2C%20mo%2C%20np%2C%20sys%0A%0A%0A%40app.cell%0Aasync%20def%20_(Path%2C%20mo%2C%20sys)%3A%0A%20%20%20%20%23%20gprMax%20itself%20needs%20compiled%20extensions%2C%20so%20in%20the%20browser%20the%20pure%0A%20%20%20%20%23%20Python%20toolbox%20modules%20are%20fetched%20from%20public%2F%20and%20laid%20out%20under%20the%0A%20%20%20%20%23%20same%20package%20paths%20they%20use%20in%20a%20real%20install.%0A%20%20%20%20MODULES%20%3D%20%7B%0A%20%20%20%20%20%20%20%20%22gprMax%2Ftoolboxes%2FMarimo%2Fh5_reader.py%22%3A%20%22h5_reader.py%22%2C%0A%20%20%20%20%20%20%20%20%22gprMax%2Ftoolboxes%2FMarimo%2Fprocessing.py%22%3A%20%22processing.py%22%2C%0A%20%20%20%20%20%20%20%20%22gprMax%2Ftoolboxes%2FUtilities%2Freceiver_identity.py%22%3A%20%22receiver_identity.py%22%2C%0A%20%20%20%20%20%20%20%20%22gprMax%2Ftoolboxes%2FUtilities%2Ftrace_time.py%22%3A%20%22trace_time.py%22%2C%0A%20%20%20%20%20%20%20%20%22gprMax%2Futilities%2Futilities.py%22%3A%20%22utilities.py%22%2C%0A%20%20%20%20%7D%0A%20%20%20%20DATA_FILES%20%3D%20%5B%22cylinder_Ascan_2D.h5%22%2C%20%22cylinder_Ascan_2D_background.h5%22%5D%0A%0A%20%20%20%20public%20%3D%20mo.notebook_location()%20%2F%20%22public%22%0A%20%20%20%20in_browser%20%3D%20sys.platform%20%3D%3D%20%22emscripten%22%0A%0A%20%20%20%20async%20def%20read_bytes(relative)%3A%0A%20%20%20%20%20%20%20%20if%20in_browser%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20from%20pyodide.http%20import%20pyfetch%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20response%20%3D%20await%20pyfetch(str(public%20%2F%20relative))%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20not%20response.ok%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20raise%20FileNotFoundError(f%22%7Brelative%7D%3A%20HTTP%20%7Bresponse.status%7D%22)%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20await%20response.bytes()%0A%20%20%20%20%20%20%20%20return%20(public%20%2F%20relative).read_bytes()%0A%0A%20%20%20%20workdir%20%3D%20Path(%22%2Ftmp%2Fgprmax_ascan_demo%22)%0A%20%20%20%20for%20target%2C%20source%20in%20MODULES.items()%3A%0A%20%20%20%20%20%20%20%20dest%20%3D%20workdir%20%2F%20target%0A%20%20%20%20%20%20%20%20dest.parent.mkdir(parents%3DTrue%2C%20exist_ok%3DTrue)%0A%20%20%20%20%20%20%20%20dest.write_bytes(await%20read_bytes(f%22gprmax_src%2F%7Bsource%7D%22))%0A%20%20%20%20for%20package%20in%20%5B%22gprMax%22%2C%20%22gprMax%2Ftoolboxes%22%2C%20%22gprMax%2Ftoolboxes%2FMarimo%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22gprMax%2Ftoolboxes%2FUtilities%22%2C%20%22gprMax%2Futilities%22%5D%3A%0A%20%20%20%20%20%20%20%20(workdir%20%2F%20package%20%2F%20%22__init__.py%22).touch()%0A%0A%20%20%20%20data_paths%20%3D%20%5B%5D%0A%20%20%20%20for%20name%20in%20DATA_FILES%3A%0A%20%20%20%20%20%20%20%20dest%20%3D%20workdir%20%2F%20%22data%22%20%2F%20name%0A%20%20%20%20%20%20%20%20dest.parent.mkdir(parents%3DTrue%2C%20exist_ok%3DTrue)%0A%20%20%20%20%20%20%20%20dest.write_bytes(await%20read_bytes(name))%0A%20%20%20%20%20%20%20%20data_paths.append(dest)%0A%0A%20%20%20%20if%20str(workdir)%20not%20in%20sys.path%3A%0A%20%20%20%20%20%20%20%20sys.path.insert(0%2C%20str(workdir))%0A%20%20%20%20return%20(data_paths%2C)%0A%0A%0A%40app.cell%0Adef%20_(data_paths)%3A%0A%20%20%20%20from%20gprMax.toolboxes.Marimo%20import%20h5_reader%2C%20processing%0A%0A%20%20%20%20files%20%3D%20h5_reader.load_files(data_paths)%0A%20%20%20%20target_key%2C%20background_key%20%3D%20(p.name%20for%20p%20in%20data_paths)%0A%20%20%20%20return%20background_key%2C%20files%2C%20h5_reader%2C%20processing%2C%20target_key%0A%0A%0A%40app.cell%0Adef%20_(files%2C%20h5_reader%2C%20mo%2C%20np%2C%20target_key)%3A%0A%20%20%20%20target_file%20%3D%20files%5Btarget_key%5D%0A%20%20%20%20components%20%3D%20h5_reader.list_components(target_file%2C%20%22rx1%22)%0A%0A%20%20%20%20def%20_label(comp)%3A%0A%20%20%20%20%20%20%20%20trace%20%3D%20h5_reader.get_trace(target_file%2C%20comp%2C%20%22rx1%22)%0A%20%20%20%20%20%20%20%20return%20f%22%7Bcomp%7D%20(all%20zeros%20in%20this%202D%20model)%22%20if%20not%20np.any(trace)%20else%20comp%0A%0A%20%20%20%20default_components%20%3D%20%5Bc%20for%20c%20in%20(%22Ez%22%2C%20%22Hx%22)%20if%20c%20in%20components%5D%20or%20components%5B%3A1%5D%0A%0A%20%20%20%20component_picker%20%3D%20mo.ui.multiselect(%0A%20%20%20%20%20%20%20%20options%3D%7B_label(c)%3A%20c%20for%20c%20in%20components%7D%2C%0A%20%20%20%20%20%20%20%20value%3D%5B_label(c)%20for%20c%20in%20default_components%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Field%20components%22%2C%0A%20%20%20%20)%0A%20%20%20%20run_picker%20%3D%20mo.ui.multiselect(%0A%20%20%20%20%20%20%20%20options%3D%5B%22Target%22%2C%20%22Background%22%2C%20%22Target%20minus%20background%22%5D%2C%0A%20%20%20%20%20%20%20%20value%3D%5B%22Target%22%2C%20%22Background%22%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Runs%22%2C%0A%20%20%20%20)%0A%20%20%20%20view_picker%20%3D%20mo.ui.radio(%0A%20%20%20%20%20%20%20%20options%3D%5B%22Time%20domain%22%2C%20%22Spectrum%22%5D%2C%20value%3D%22Time%20domain%22%2C%20inline%3DTrue%0A%20%20%20%20)%0A%20%20%20%20return%20component_picker%2C%20run_picker%2C%20target_file%2C%20view_picker%0A%0A%0A%40app.cell%0Adef%20_(mo%2C%20processing)%3A%0A%20%20%20%20gain_kind%20%3D%20mo.ui.dropdown(%0A%20%20%20%20%20%20%20%20options%3D%7Binfo%5B%22label%22%5D%3A%20kind%20for%20kind%2C%20info%20in%20processing.GAIN_KINDS.items()%7D%2C%0A%20%20%20%20%20%20%20%20value%3Dprocessing.GAIN_KINDS%5B%22none%22%5D%5B%22label%22%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Gain%22%2C%0A%20%20%20%20)%0A%20%20%20%20gain_factor%20%3D%20mo.ui.slider(0.0%2C%205.0%2C%20step%3D0.1%2C%20value%3D1.0%2C%20label%3D%22Factor%22%2C%20debounce%3DTrue)%0A%20%20%20%20gain_power%20%3D%20mo.ui.slider(0.0%2C%203.0%2C%20step%3D0.1%2C%20value%3D1.0%2C%20label%3D%22Power%22%2C%20debounce%3DTrue)%0A%20%20%20%20gain_start%20%3D%20mo.ui.slider(0.0%2C%203.0%2C%20step%3D0.05%2C%20value%3D1.4%2C%20label%3D%22Start%20(ns)%22%2C%20debounce%3DTrue)%0A%20%20%20%20return%20gain_factor%2C%20gain_kind%2C%20gain_power%2C%20gain_start%0A%0A%0A%40app.cell%0Adef%20_(%0A%20%20%20%20component_picker%2C%0A%20%20%20%20gain_factor%2C%0A%20%20%20%20gain_kind%2C%0A%20%20%20%20gain_power%2C%0A%20%20%20%20gain_start%2C%0A%20%20%20%20mo%2C%0A%20%20%20%20run_picker%2C%0A%20%20%20%20view_picker%2C%0A)%3A%0A%20%20%20%20controls%20%3D%20mo.vstack(%0A%20%20%20%20%20%20%20%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.hstack(%5Bcomponent_picker%2C%20run_picker%5D%2C%20justify%3D%22start%22%2C%20gap%3D2)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.hstack(%5Bgain_kind%2C%20gain_factor%2C%20gain_power%2C%20gain_start%5D%2C%20justify%3D%22start%22%2C%20gap%3D2)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20view_picker%2C%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20)%0A%20%20%20%20return%20(controls%2C)%0A%0A%0A%40app.cell%0Adef%20_(%0A%20%20%20%20background_key%2C%0A%20%20%20%20component_picker%2C%0A%20%20%20%20files%2C%0A%20%20%20%20gain_factor%2C%0A%20%20%20%20gain_kind%2C%0A%20%20%20%20gain_power%2C%0A%20%20%20%20gain_start%2C%0A%20%20%20%20go%2C%0A%20%20%20%20h5_reader%2C%0A%20%20%20%20make_subplots%2C%0A%20%20%20%20mo%2C%0A%20%20%20%20processing%2C%0A%20%20%20%20run_picker%2C%0A%20%20%20%20target_key%2C%0A%20%20%20%20view_picker%2C%0A)%3A%0A%20%20%20%20selected_components%20%3D%20component_picker.value%0A%20%20%20%20selected_runs%20%3D%20run_picker.value%0A%20%20%20%20spectrum%20%3D%20view_picker.value%20%3D%3D%20%22Spectrum%22%0A%0A%20%20%20%20def%20_build()%3A%0A%20%20%20%20%20%20%20%20target%20%3D%20files%5Btarget_key%5D%0A%20%20%20%20%20%20%20%20background%20%3D%20files%5Bbackground_key%5D%0A%20%20%20%20%20%20%20%20colours%20%3D%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22Target%22%3A%20%22%231656b8%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22Background%22%3A%20%22%23c42b91%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22Target%20minus%20background%22%3A%20%22%2328367f%22%2C%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20notes%20%3D%20%5B%5D%0A%0A%20%20%20%20%20%20%20%20fig%20%3D%20make_subplots(%0A%20%20%20%20%20%20%20%20%20%20%20%20rows%3Dlen(selected_components)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20cols%3D1%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20shared_xaxes%3DTrue%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20vertical_spacing%3D0.08%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20subplot_titles%3Dselected_components%2C%0A%20%20%20%20%20%20%20%20)%0A%0A%20%20%20%20%20%20%20%20for%20row%2C%20comp%20in%20enumerate(selected_components%2C%20start%3D1)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20time_ns%20%3D%20h5_reader.get_time_axis(target%2C%20%22ns%22%2C%20%22rx1%22%2C%20comp)%0A%20%20%20%20%20%20%20%20%20%20%20%20dt%20%3D%20target%5B%22receivers%22%5D%5B%22rx1%22%5D%5B%22component_meta%22%5D%5Bcomp%5D%5B%22sample_interval%22%5D%0A%20%20%20%20%20%20%20%20%20%20%20%20t_trace%20%3D%20h5_reader.get_trace(target%2C%20comp%2C%20%22rx1%22)%0A%20%20%20%20%20%20%20%20%20%20%20%20b_trace%20%3D%20h5_reader.get_trace(background%2C%20comp%2C%20%22rx1%22)%0A%20%20%20%20%20%20%20%20%20%20%20%20series%20%3D%20%7B%22Target%22%3A%20t_trace%2C%20%22Background%22%3A%20b_trace%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20%22Target%20minus%20background%22%20in%20selected_runs%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20series%5B%22Target%20minus%20background%22%5D%20%3D%20processing.subtract_traces(%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20t_trace%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20b_trace%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20dt_target%3Ddt%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20dt_reference%3Dbackground%5B%22receivers%22%5D%5B%22rx1%22%5D%5B%22component_meta%22%5D%5Bcomp%5D%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22sample_interval%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20)%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20x_limit%20%3D%20None%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20run%20in%20selected_runs%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20trace%2C%20_curve%20%3D%20processing.apply_gain(%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20series%5Brun%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20time_ns%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20gain_kind.value%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20factor%3Dgain_factor.value%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20power%3Dgain_power.value%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20start_ns%3Dgain_start.value%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20spectrum%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20freqs%2C%20power_db%2C%20peak_db%20%3D%20processing.fft_spectrum(trace%2C%20dt)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20peak_db%20is%20None%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20notes.append(f%22%7Bcomp%7D%20%7Brun.lower()%7D%20is%20all%20zeros%2C%20so%20it%20has%20no%20spectrum.%22)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20continue%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20x%20%3D%20freqs%20%2F%201e9%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20y%20%3D%20power_db%20%2B%20peak_db%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20limit%20%3D%20processing.spectrum_view_limit(freqs%2C%20power_db)%20%2F%201e9%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20x_limit%20%3D%20max(x_limit%20or%200.0%2C%20limit)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20x%2C%20y%20%3D%20time_ns%2C%20trace%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20fig.add_trace(%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20go.Scatter(%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20x%3Dx%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20y%3Dy%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20mode%3D%22lines%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20name%3Drun%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20legendgroup%3Drun%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20showlegend%3Drow%20%3D%3D%201%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20line%3D%7B%22color%22%3A%20colours%5Brun%5D%2C%20%22width%22%3A%201.6%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20row%3Drow%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20col%3D1%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20)%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20unit%20%3D%20%22Power%20(dB)%22%20if%20spectrum%20else%20h5_reader.get_unit_label(comp)%0A%20%20%20%20%20%20%20%20%20%20%20%20fig.update_yaxes(title_text%3Dunit%2C%20row%3Drow%2C%20col%3D1)%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20spectrum%20and%20x_limit%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20fig.update_xaxes(range%3D%5B0%2C%20x_limit%5D%2C%20row%3Drow%2C%20col%3D1)%0A%0A%20%20%20%20%20%20%20%20fig.update_xaxes(%0A%20%20%20%20%20%20%20%20%20%20%20%20title_text%3D%22Frequency%20(GHz)%22%20if%20spectrum%20else%20%22Time%20(ns)%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20row%3Dlen(selected_components)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20col%3D1%2C%0A%20%20%20%20%20%20%20%20)%0A%20%20%20%20%20%20%20%20fig.update_layout(%0A%20%20%20%20%20%20%20%20%20%20%20%20height%3D260%20*%20len(selected_components)%20%2B%2080%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20margin%3D%7B%22l%22%3A%2060%2C%20%22r%22%3A%2020%2C%20%22t%22%3A%2040%2C%20%22b%22%3A%2050%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20template%3D%22plotly_white%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20legend%3D%7B%22orientation%22%3A%20%22h%22%2C%20%22y%22%3A%20-0.15%20if%20len(selected_components)%20%3D%3D%201%20else%20-0.06%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20title%3Dprocessing.gain_label(%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20gain_kind.value%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20gain_factor.value%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20gain_power.value%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20gain_start.value%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20)%2C%0A%20%20%20%20%20%20%20%20)%0A%20%20%20%20%20%20%20%20return%20fig%2C%20notes%0A%0A%20%20%20%20if%20selected_components%20and%20selected_runs%3A%0A%20%20%20%20%20%20%20%20fig%2C%20notes%20%3D%20_build()%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20fig%20%3D%20mo.callout(mo.md(%22Pick%20at%20least%20one%20component%20and%20one%20run.%22)%2C%20kind%3D%22info%22)%0A%20%20%20%20%20%20%20%20notes%20%3D%20%5B%5D%0A%20%20%20%20note_md%20%3D%20mo.md(%22%20%20%5Cn%22.join(notes))%20if%20notes%20else%20mo.md(%22%22)%0A%20%20%20%20return%20fig%2C%20note_md%0A%0A%0A%40app.cell%0Adef%20_(controls%2C%20fig%2C%20mo%2C%20note_md)%3A%0A%20%20%20%20mo.vstack(%5Bcontrols%2C%20fig%2C%20note_md%5D)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(h5_reader%2C%20mo%2C%20target_file)%3A%0A%20%20%20%20mo.accordion(%7B%22File%20metadata%22%3A%20mo.md(h5_reader.format_metadata_text(target_file))%7D)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(%22%22%22%0A%20%20%20%20**Things%20to%20try.**%20Ex%2C%20Ey%20and%20Hz%20are%20flat%20because%20a%202D%20TMz%20model%20never%0A%20%20%20%20updates%20them.%20Select%20*Target%20minus%20background*%20to%20strip%20the%20direct%0A%20%20%20%20wave%20and%20keep%20only%20the%20cylinder's%20reflection.%20Switch%20to%20*Spectrum*%20to%0A%20%20%20%20see%20where%20a%201.5%20GHz%20Ricker%20source%20puts%20its%20energy.%0A%0A%20%20%20%20Source%3A%20%5BgprMax%5D(https%3A%2F%2Fgithub.com%2FgprMax%2FgprMax)%2C%20toolbox%20in%0A%20%20%20%20%60gprMax%2Ftoolboxes%2FMarimo%2F%60.%20Install%20locally%20with%0A%20%20%20%20%60pip%20install%20%22gprMax%5Bmarimo%5D%22%60.%0A%20%20%20%20%22%22%22)%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <script data-marimo="true">
+      Object.defineProperty(window, "__MARIMO_MOUNT_CONFIG__", {
+        value: Object.freeze({
+            "filename": "notebook.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.26.0",
+            "serverToken": "unused",
+            "config": {"cache": {"loader": "lazy", "store": null, "verification": "off"}, "datasources": {}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "code_lens": true, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "experimental": {"debugger": false, "execution_type": "relaxed", "isolate_apps": false, "line_timing": false}, "file_browser": null, "formatting": {"infer_types": "off", "line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "lint": {"ignore": [], "select": []}, "package_management": {"manager": "pip"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "cache_cells": false, "default_auto_download": [], "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "pin_modules": true, "pythonpath": [], "reactive_tests": true, "serve_cached_sessions_in_apps": false, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"allow_origins": [], "base_url": "", "browser": "default", "disable_file_downloads": false, "follow_symlink": false, "headless": false, "host": "127.0.0.1", "include_code": false, "port": null, "proxy": null, "redirect_console_to_browser": false, "session_cookie_partitioned": false, "session_cookie_secure": false, "session_secret": null, "skew_protection": true, "skip_update_check": false, "timeout": null, "token_password": null, "token_password_file": null, "watch": false}, "sharing": null, "signing": {"private_key_path": null, "trusted_signers": {}}, "snippets": {"custom_paths": [], "include_default_snippets": true}, "venv": {"path": null, "writable": false}},
+            "configOverrides": {},
+            "appConfig": {"app_title": "gprMax A-scan explorer", "sql_output": "auto", "width": "medium"},
+            "layout": null,
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null,
+            "pairConfig": {"command": "uvx marimo@latest", "hostEnabled": false, "templates": {"notebook": "Notebook: {notebook} (use --notebook for execution)\n", "prompt": "Pair with me on this running marimo notebook.\n\nURL: {url}\n{notebook}{session}\nRun `{command} pair --help` first.\nUse `{command}` for all marimo commands.{authentication}", "session": "Session: {session}\n", "token": "\n\nFor explicit server authentication, set `export MARIMO_TOKEN={token}` in the shell that runs marimo.", "token_file": "\n\nFor explicit server authentication, pass `--token-file {token_file}`."}}
+        }),
+        writable: false,
+        configurable: false,
+      });
+    </script>
+  </body>
+</html>
