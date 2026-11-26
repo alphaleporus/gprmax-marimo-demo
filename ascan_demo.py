@@ -24,9 +24,10 @@ def _(mo):
         Pick field components, overlay the runs, subtract the background,
         apply gain, or switch to the spectrum.
 
-        Everything runs in your browser. The output files were produced by
-        gprMax 4.0.2 and are read with the same `h5_reader` and `processing`
-        modules that ship in `gprMax[marimo]`.
+        Everything runs in your browser, so the first load takes up to half a
+        minute while Python starts. The output files were produced by gprMax
+        4.0.2 and are read with the same `h5_reader` and `processing` modules
+        that ship in `gprMax[marimo]`.
         """
     )
     return
@@ -142,10 +143,27 @@ def _(mo, processing):
         value=processing.GAIN_KINDS["none"]["label"],
         label="Gain",
     )
-    gain_factor = mo.ui.slider(0.0, 5.0, step=0.1, value=1.0, label="Factor", debounce=True)
-    gain_power = mo.ui.slider(0.0, 3.0, step=0.1, value=1.0, label="Power", debounce=True)
-    gain_start = mo.ui.slider(0.0, 3.0, step=0.05, value=1.4, label="Start (ns)", debounce=True)
-    return gain_factor, gain_kind, gain_power, gain_start
+    return (gain_kind,)
+
+
+@app.cell
+def _(gain_kind, mo, processing):
+    # rebuilt when the gain type changes so each slider carries the right unit
+    gain_info = processing.GAIN_KINDS[gain_kind.value]
+    factor_unit = gain_info["factor_unit"]
+    gain_factor = mo.ui.slider(
+        0.0, 5.0, step=0.1, value=1.0, debounce=True, show_value=True,
+        label=f"Factor ({factor_unit})" if factor_unit else "Factor",
+    )
+    gain_power = mo.ui.slider(
+        0.0, 3.0, step=0.1, value=1.0, debounce=True, show_value=True, label="Power"
+    )
+    gain_start = mo.ui.slider(
+        0.0, 3.0, step=0.05, value=1.4, debounce=True, show_value=True, label="Start (ns)"
+    )
+    uses_factor = gain_kind.value not in ("none", "power")
+    uses_power = bool(gain_info["uses_power"])
+    return gain_factor, gain_power, gain_start, uses_factor, uses_power
 
 
 @app.cell
@@ -157,14 +175,24 @@ def _(
     gain_start,
     mo,
     run_picker,
+    uses_factor,
+    uses_power,
     view_picker,
 ):
+    gain_sliders = []
+    if gain_kind.value != "none":
+        if uses_factor:
+            gain_sliders.append(gain_factor)
+        if uses_power:
+            gain_sliders.append(gain_power)
+        gain_sliders.append(gain_start)
     controls = mo.vstack(
         [
-            mo.hstack([component_picker, run_picker], justify="start", gap=2),
-            mo.hstack([gain_kind, gain_factor, gain_power, gain_start], justify="start", gap=2),
-            view_picker,
-        ]
+            mo.hstack([component_picker, run_picker], justify="start", gap=2, wrap=True),
+            mo.hstack([gain_kind, view_picker], justify="start", gap=2, wrap=True),
+            mo.hstack(gain_sliders, justify="start", gap=2, wrap=True),
+        ],
+        gap=0.75,
     )
     return (controls,)
 
@@ -182,6 +210,7 @@ def _(
     h5_reader,
     make_subplots,
     mo,
+    np,
     processing,
     run_picker,
     target_key,
@@ -194,11 +223,13 @@ def _(
     def _build():
         target = files[target_key]
         background = files[background_key]
-        colours = {
-            "Target": "#1656b8",
-            "Background": "#c42b91",
-            "Target minus background": "#28367f",
+        styles = {
+            "Background": {"color": "#c42b91", "width": 1.6, "dash": "dash"},
+            "Target": {"color": "#1656b8", "width": 1.8},
+            "Target minus background": {"color": "#28367f", "width": 2.0},
         }
+        # background first so the target trace draws on top of it
+        runs_in_order = [r for r in styles if r in selected_runs]
         notes = []
         view_limits = []
 
@@ -227,7 +258,7 @@ def _(
                 )
 
             x_limit = None
-            for run in selected_runs:
+            for run in runs_in_order:
                 trace, _curve = processing.apply_gain(
                     series[run],
                     time_ns,
@@ -237,7 +268,10 @@ def _(
                     start_ns=gain_start.value,
                 )
                 if spectrum:
-                    freqs, power_db, peak_db = processing.fft_spectrum(trace, dt)
+                    # zero-pad so the 3 ns trace gives a smooth spectrum instead of
+                    # 0.33 GHz steps; the transform is still gprMax's fft_power
+                    padded = np.pad(trace, (0, max(0, 4096 - trace.size)))
+                    freqs, power_db, peak_db = processing.fft_spectrum(padded, dt)
                     if peak_db is None:
                         notes.append(f"{comp} {run.lower()} is all zeros, so it has no spectrum.")
                         continue
@@ -256,7 +290,7 @@ def _(
                         name=run,
                         legendgroup=run,
                         showlegend=row == 1,
-                        line={"color": colours[run], "width": 1.6},
+                        line=styles[run],
                     ),
                     row=row,
                     col=1,
@@ -278,15 +312,9 @@ def _(
         fig.update_layout(
             uirevision=f"{view_picker.value}-{','.join(selected_components)}",
             height=260 * len(selected_components) + 80,
-            margin={"l": 60, "r": 20, "t": 40, "b": 50},
+            margin={"l": 60, "r": 20, "t": 30, "b": 50},
             template="plotly_white",
             legend={"orientation": "h", "y": -0.15 if len(selected_components) == 1 else -0.06},
-            title=processing.gain_label(
-                gain_kind.value,
-                gain_factor.value,
-                gain_power.value,
-                gain_start.value,
-            ),
         )
         return fig, notes
 
@@ -295,6 +323,13 @@ def _(
     else:
         fig = mo.callout(mo.md("Pick at least one component and one run."), kind="info")
         notes = []
+    if gain_kind.value != "none":
+        notes.insert(
+            0,
+            "Showing " + processing.gain_label(
+                gain_kind.value, gain_factor.value, gain_power.value, gain_start.value
+            ) + ".",
+        )
     note_md = mo.md("  \n".join(notes)) if notes else mo.md("")
     return fig, note_md
 
