@@ -312,7 +312,7 @@ def _(
         fig.update_layout(
             uirevision=f"{view_picker.value}-{','.join(selected_components)}",
             height=260 * len(selected_components) + 80,
-            margin={"l": 60, "r": 20, "t": 30, "b": 50},
+            margin={"l": 60, "r": 20, "t": 60, "b": 50},
             template="plotly_white",
             legend={"orientation": "h", "y": -0.15 if len(selected_components) == 1 else -0.06},
         )
