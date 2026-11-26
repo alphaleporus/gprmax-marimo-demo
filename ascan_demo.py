@@ -195,6 +195,7 @@ def _(
             "Target minus background": "#28367f",
         }
         notes = []
+        view_limits = []
 
         fig = make_subplots(
             rows=len(selected_components),
@@ -259,14 +260,18 @@ def _(
             unit = "Power (dB)" if spectrum else h5_reader.get_unit_label(comp)
             fig.update_yaxes(title_text=unit, row=row, col=1)
             if spectrum and x_limit:
-                fig.update_xaxes(range=[0, x_limit], row=row, col=1)
+                view_limits.append(x_limit)
 
+        if view_limits:
+            # the rows share one x axis, so give every row the same fixed range
+            fig.update_xaxes(range=[0, max(view_limits)], autorange=False)
         fig.update_xaxes(
             title_text="Frequency (GHz)" if spectrum else "Time (ns)",
             row=len(selected_components),
             col=1,
         )
         fig.update_layout(
+            uirevision=f"{view_picker.value}-{','.join(selected_components)}",
             height=260 * len(selected_components) + 80,
             margin={"l": 60, "r": 20, "t": 40, "b": 50},
             template="plotly_white",
