@@ -24,9 +24,9 @@ def _(mo):
     Pick field components, overlay the runs, subtract the background,
     apply gain, or switch to the spectrum.
 
-    Everything runs in your browser, so the first load takes up to half a
-    minute while Python starts. The output files were produced by gprMax
-    4.0.2 and are read with the same `h5_reader` and `processing` modules
+    Everything runs in your browser, so the first load can take 30 seconds or
+    more while Python starts. The output files were produced by gprMax 4.0.2
+    and are read with the same `h5_reader` and `processing` modules
     that ship in `gprMax[marimo]`.
     """)
 
