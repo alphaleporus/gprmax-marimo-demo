@@ -127,7 +127,7 @@ def _(files, h5_reader, mo, np, target_key):
     )
     run_picker = mo.ui.multiselect(
         options=["Target", "Background", "Target minus background"],
-        value=["Target", "Background"],
+        value=["Target", "Background", "Target minus background"],
         label="Runs",
     )
     view_picker = mo.ui.radio(
@@ -225,8 +225,8 @@ def _(
         background = files[background_key]
         styles = {
             "Background": {"color": "#c42b91", "width": 1.6, "dash": "dash"},
-            "Target": {"color": "#1656b8", "width": 1.8},
-            "Target minus background": {"color": "#28367f", "width": 2.0},
+            "Target": {"color": "#3b8cff", "width": 1.6},
+            "Target minus background": {"color": "#28367f", "width": 2.4},
         }
         # background first so the target trace draws on top of it
         runs_in_order = [r for r in styles if r in selected_runs]
@@ -350,10 +350,11 @@ def _(h5_reader, mo, target_file):
 def _(mo):
     mo.md(
         """
-        **Things to try.** Ex, Ey and Hz are flat because a 2D TMz model never
-        updates them. Select *Target minus background* to strip the direct
-        wave and keep only the cylinder's reflection. Switch to *Spectrum* to
-        see where a 1.5 GHz Ricker source puts its energy.
+        **Things to try.** The dark line is target minus background: the direct
+        wave is the same in both runs, so it cancels and only the cylinder's
+        reflection is left. Ex, Ey and Hz are flat because a 2D TMz model never
+        updates them. Switch to *Spectrum* to see where the 1.5 GHz Ricker
+        source puts its energy.
 
         Source: [gprMax](https://github.com/gprMax/gprMax), toolbox in
         `gprMax/toolboxes/Marimo/`. Install locally with
