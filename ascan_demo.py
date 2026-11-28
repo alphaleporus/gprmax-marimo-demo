@@ -7,6 +7,7 @@
 #     "plotly",
 # ]
 # ///
+
 import marimo
 
 __generated_with = "0.26.0"
@@ -15,22 +16,19 @@ app = marimo.App(width="medium", app_title="gprMax A-scan explorer")
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        """
-        # gprMax A-scan explorer
+    mo.md("""
+    # gprMax A-scan explorer
 
-        Two gprMax runs of the same 2D scene: a metal cylinder buried in a
-        dielectric half-space, and the same half-space with no cylinder in it.
-        Pick field components, overlay the runs, subtract the background,
-        apply gain, or switch to the spectrum.
+    Two gprMax runs of the same 2D scene: a metal cylinder buried in a
+    dielectric half-space, and the same half-space with no cylinder in it.
+    Pick field components, overlay the runs, subtract the background,
+    apply gain, or switch to the spectrum.
 
-        Everything runs in your browser, so the first load takes up to half a
-        minute while Python starts. The output files were produced by gprMax
-        4.0.2 and are read with the same `h5_reader` and `processing` modules
-        that ship in `gprMax[marimo]`.
-        """
-    )
-    return
+    Everything runs in your browser, so the first load takes up to half a
+    minute while Python starts. The output files were produced by gprMax
+    4.0.2 and are read with the same `h5_reader` and `processing` modules
+    that ship in `gprMax[marimo]`.
+    """)
 
 
 @app.cell
@@ -337,31 +335,26 @@ def _(
 @app.cell
 def _(controls, fig, mo, note_md):
     mo.vstack([controls, fig, note_md])
-    return
 
 
 @app.cell(hide_code=True)
 def _(h5_reader, mo, target_file):
     mo.accordion({"File metadata": mo.md(h5_reader.format_metadata_text(target_file))})
-    return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        """
-        **Things to try.** The dark line is target minus background: the direct
-        wave is the same in both runs, so it cancels and only the cylinder's
-        reflection is left. Ex, Ey and Hz are flat because a 2D TMz model never
-        updates them. Switch to *Spectrum* to see where the 1.5 GHz Ricker
-        source puts its energy.
+    mo.md("""
+    **Things to try.** The dark line is target minus background: the direct
+    wave is the same in both runs, so it cancels and only the cylinder's
+    reflection is left. Ex, Ey and Hz are flat because a 2D TMz model never
+    updates them. Switch to *Spectrum* to see where the 1.5 GHz Ricker
+    source puts its energy.
 
-        Source: [gprMax](https://github.com/gprMax/gprMax), toolbox in
-        `gprMax/toolboxes/Marimo/`. Install locally with
-        `pip install "gprMax[marimo]"`.
-        """
-    )
-    return
+    Source: [gprMax](https://github.com/gprMax/gprMax), toolbox in
+    `gprMax/toolboxes/Marimo/`. Install locally with
+    `pip install "gprMax[marimo]"`.
+    """)
 
 
 if __name__ == "__main__":
